@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "test:dev": "mocha -w"
+    "test:dev": "mocha -w",
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "blog",
