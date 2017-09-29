@@ -62,9 +62,4 @@ describe('routerCore', () => {
     expect(bar).to.be.an('object')
     expect(bar.user).to.be.equal('1')
   })
-
-  it('ff', function () {
-    require('../../index.js')
-
-  })
 })
