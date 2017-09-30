@@ -1,3 +1,6 @@
+const mysql = require('mysql')
+const {HOST, USER, PASSWORD, PORT, DATABASE} = require('../conf')
+
 class DB {
   constructor () {
     this._table = ''
@@ -76,7 +79,7 @@ class DB {
 
     const values = []
     items.forEach(item => {
-      values.push(generationValues(Object.values(item)))
+      values.push(generationValues(Object.values(item).map(wrapValue)))
     })
 
     this._sql = `INSERT INTO ${this._table} ${keyString} values ${values.join(', ')}`
@@ -113,18 +116,42 @@ class DB {
     const keyValues = []
     for (let key in data) {
       const value = data[key]
-      keyValues.push(`${key} = ${value || 'default'}`)
+      keyValues.push(`${key} = ${value ? wrapValue(value) : 'default'}`)
     }
     this._sql = `UPDATE ${this._table} SET ${keyValues.join(', ')}${this.generationWhere()}`
     return this
   }
   /**
-   * 
+   * 删除表中数据
    */
   delete () {
     checkTable(this._table)
     this._sql = `DELETE FROM ${this._table}${this.generationWhere()}`
   }
+  /**
+   * 执行
+   * @param {string} sql
+   * @return {Promise<object>}
+   */
+  exec (sql) {
+    if (sql) this._sql = sql
+    return new Promise((resolve, reject) => {
+      const connection = mysql.createConnection({
+        host: HOST,
+        user: USER,
+        password: PASSWORD,
+        database: DATABASE,
+        port: PORT
+      })
+      connection.connect()
+      connection.query(this._sql, function (error, result, fields) {
+        if (error) reject(error)
+        resolve({result, fields})
+      })
+      connection.end()
+    })
+  }
+
   sum (field) {}
   avg (field) {}
   max (field) {}
@@ -138,7 +165,7 @@ class DB {
  * @param {context} context
  * @return
  */
-function DBMiddle (request, response, context) {
+async function DBMiddle (request, response, context) {
   context.DB = DB
 }
 /**
@@ -157,8 +184,17 @@ function generationValues (items) {
 function checkTable (table) {
   if (table === '') throw new Error('没设置表名')
 }
+/**
+ * 给值添加 "" 包裹
+ * @param {string} val
+ * @return {string}
+ */
+function wrapValue (val) {
+  return '"' + val + '"'
+}
 
 module.exports = exports = DBMiddle
 exports.DB = DB
 exports.generationValues = generationValues
 exports.checkTable = checkTable
+exports.wrapValue = wrapValue

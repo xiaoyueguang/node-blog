@@ -25,7 +25,7 @@ module.exports = function (
       fail(e)
     }
     response.writeHead(context.status_code, context.header)
-    response.write(context.body)
+    response.write(context.body + '')
     response.end()
   }).listen(port)
 

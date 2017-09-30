@@ -134,13 +134,13 @@ describe('dbCore: DB类生成SQL方法', function () {
     let db = new DB()
     db.table('foo')
       .insert({name: 1})
-    expect(db._sql).to.be.equal('INSERT INTO foo (name) values (1)')
+    expect(db._sql).to.be.equal('INSERT INTO foo (name) values ("1")')
 
     db.insert({name: 1, age: 2})
-    expect(db._sql).to.be.equal('INSERT INTO foo (name, age) values (1, 2)')
+    expect(db._sql).to.be.equal('INSERT INTO foo (name, age) values ("1", "2")')
 
     db.insert({name: 1, age: 2}, {name: 3, age: 4})
-    expect(db._sql).to.be.equal('INSERT INTO foo (name, age) values (1, 2), (3, 4)')
+    expect(db._sql).to.be.equal('INSERT INTO foo (name, age) values ("1", "2"), ("3", "4")')
   })
 
   it('实例化后, 调用update方法后, 如果没有table, 则抛出错误', function () {
@@ -165,14 +165,14 @@ describe('dbCore: DB类生成SQL方法', function () {
     db.table('foo')
       .update({name: 1})
 
-    expect(db._sql).to.be.equal('UPDATE foo SET name = 1')
+    expect(db._sql).to.be.equal('UPDATE foo SET name = "1"')
     db.update({name: 1, age: undefined})
-    expect(db._sql).to.be.equal('UPDATE foo SET name = 1, age = default')
+    expect(db._sql).to.be.equal('UPDATE foo SET name = "1", age = default')
     db.update({name: 1, age: 1})
-    expect(db._sql).to.be.equal('UPDATE foo SET name = 1, age = 1')
+    expect(db._sql).to.be.equal('UPDATE foo SET name = "1", age = "1"')
     db.where('id = 3')
     db.update({name: 1, age: 1})
-    expect(db._sql).to.be.equal('UPDATE foo SET name = 1, age = 1 WHERE id = 3')
+    expect(db._sql).to.be.equal('UPDATE foo SET name = "1", age = "1" WHERE id = 3')
   })
 
   it('实例化后, 调用delete方法后, 如果没有table, 则抛出错误', function () {
