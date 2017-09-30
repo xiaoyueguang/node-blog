@@ -11,7 +11,7 @@ const methods = [
 ]
 
 module.exports = exports = router
-
+exports.methods = methods
 /**
  * 抓取参数路径
  * @param {string} url 请求的url路径
@@ -57,7 +57,6 @@ function router (request, response, context) {
       request.method === key && define(path, controller)
     }
   })
-
   return Object.assign({}, METHODS, {any: define})
 }
 /**
