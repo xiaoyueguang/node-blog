@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha 'test/**/*.test.js'",
     "test:dev": "mocha 'test/**/*.test.js' -w",
+    "test:db": "mocha 'test/**/dbCore.test.js' -w",
     "dev": "nodemon index.js"
   },
   "keywords": [
@@ -23,5 +24,6 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.5.3"
-  }
+  },
+  "dependencies": {}
 }
