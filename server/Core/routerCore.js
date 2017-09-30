@@ -42,19 +42,19 @@ function router (request, response, context) {
    * @param {string} path 路径
    * @param {methods} controller 控制器方法
    */
-  const define = (path, controller) => {
+  const define = async (path, controller) => {
     const params = matchParams(path, matchParamsPath(request.url))
     if (params) {
       // 将抓取到的参数对象传入上下文
       context.params = params
-      controller(request, response, context)
+      await controller(request, response, context)
     }
   }
 
   const METHODS = {}
   methods.forEach(key => {
-    METHODS[key.toLowerCase()] = (path, controller) => {
-      request.method === key && define(path, controller)
+    METHODS[key.toLowerCase()] = async (path, controller) => {
+      request.method === key && await define(path, controller)
     }
   })
   return Object.assign({}, METHODS, {any: define})

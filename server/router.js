@@ -6,9 +6,9 @@ const router = require('./Core/routerCore')
 module.exports = async function (request, response, context) {
   const {get, post, any} = router(request, response, context)
 
-  get('/foo', foo)
-  get('/foo/:id', bar)
-  get('/bar', foo)
-  post('/bar', bar)
-  any('/', home)
+  await get('/foo', foo)
+  await get('/foo/:id', bar)
+  await get('/bar', foo)
+  await post('/bar', bar)
+  await any('/', home)
 }

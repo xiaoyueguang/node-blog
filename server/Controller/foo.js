@@ -1,3 +1,3 @@
-module.exports = (request, response, context) => {
+module.exports = async (request, response, context) => {
   context.body = 'Hello Foo!'
 }
