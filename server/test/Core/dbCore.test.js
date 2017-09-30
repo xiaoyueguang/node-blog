@@ -7,7 +7,8 @@ describe('dbCORE: 助手函数', function () {
     expect(dbCore.generationValues([1, 2, 3, 4]))
       .to.be.equal('(1, 2, 3, 4)')
   })
-  it('实例化后, 可通过checkTable检查报错', function () {
+
+  it('checkTable, 检查table是否设置正确', function () {
     let table = ''
     function exec () {
       dbCore.checkTable(table)
@@ -15,6 +16,10 @@ describe('dbCORE: 助手函数', function () {
     expect(exec).to.throw('没设置表名')
     table = 'foo'
     expect(exec).to.not.throw()
+  })
+
+  it('wrapValue: 将值包裹上一层 ""', function () {
+    expect(dbCore.wrapValue(1)).to.be.equal('"1"')
   })
 })
 
@@ -85,8 +90,8 @@ describe('dbCore: DB类', function () {
   })
 })
 
-describe('dbCore: DB类生成SQL方法', function () {
-  it('实例化后, 调用select方法后, 如果没有table, 则抛出错误', function () {
+describe('dbCore: select', function () {
+  it('没有table, 则抛出错误', function () {
     let db = new DB()
     function exec () {
       db.select()
@@ -94,7 +99,14 @@ describe('dbCore: DB类生成SQL方法', function () {
     expect(exec).to.throw('没设置表名')
   })
 
-  it('实例化后, 调用select方法后, 生成对应的SQL', function () {
+  it('返回的依然是本身', function () {
+    let db = new DB()
+    let foo = db.table('foo').select()
+    expect(foo).to.be.equal(db)
+    expect(foo).to.be.instanceOf(DB)
+  })
+
+  it('生成对应的SQL', function () {
     let db = new DB()
     db.table('foo')
       .select()
@@ -112,8 +124,10 @@ describe('dbCore: DB类生成SQL方法', function () {
     db.select(['title', 'id'])
     expect(db._sql).to.be.equal('SELECT title, id FROM foo WHERE id > 1 ORDER BY id desc')
   })
+})
 
-  it('实例化后, 调用insert方法后, 如果没有table, 则抛出错误', function () {
+describe('dbCore: insert', function () {
+  it('如果没有table, 则抛出错误', function () {
     let db = new DB()
     function exec () {
       db.insert()
@@ -121,7 +135,7 @@ describe('dbCore: DB类生成SQL方法', function () {
     expect(exec).to.throw('没设置表名')
   })
 
-  it('实例化后, 调用insert时, 传入数据为空时, 则抛出错误', function () {
+  it('传入数据为空时, 则抛出错误', function () {
     let db = new DB()
     function exec () {
       db.table('foo')
@@ -130,7 +144,14 @@ describe('dbCore: DB类生成SQL方法', function () {
     expect(exec).to.be.throw('数据空!')
   })
 
-  it('实例化后, 调用insert时, 生成对应的SQL', function () {
+  it('返回的依然是本身', function () {
+    let db = new DB()
+    let foo = db.table('foo').insert({})
+    expect(foo).to.be.equal(db)
+    expect(foo).to.be.instanceOf(DB)
+  })
+
+  it('生成对应的SQL', function () {
     let db = new DB()
     db.table('foo')
       .insert({name: 1})
@@ -142,8 +163,10 @@ describe('dbCore: DB类生成SQL方法', function () {
     db.insert({name: 1, age: 2}, {name: 3, age: 4})
     expect(db._sql).to.be.equal('INSERT INTO foo (name, age) values ("1", "2"), ("3", "4")')
   })
+})
 
-  it('实例化后, 调用update方法后, 如果没有table, 则抛出错误', function () {
+describe('dbCore: update', function () {
+  it('如果没有table, 则抛出错误', function () {
     let db = new DB()
     function exec () {
       db.update()
@@ -151,7 +174,7 @@ describe('dbCore: DB类生成SQL方法', function () {
     expect(exec).to.throw('没设置表名')
   })
 
-  it('实例化后, 调用update时, 传入数据为空时, 则抛出错误', function () {
+  it('传入数据为空时, 则抛出错误', function () {
     let db = new DB()
     function exec () {
       db.table('foo')
@@ -160,7 +183,14 @@ describe('dbCore: DB类生成SQL方法', function () {
     expect(exec).to.be.throw('数据空!')
   })
 
-  it('实例化后, 调用insert时, 生成对应的SQL', function () {
+  it('返回的依然是本身', function () {
+    let db = new DB()
+    let foo = db.table('foo').update({})
+    expect(foo).to.be.equal(db)
+    expect(foo).to.be.instanceOf(DB)
+  })
+
+  it('生成对应的SQL', function () {
     let db = new DB()
     db.table('foo')
       .update({name: 1})
@@ -174,8 +204,10 @@ describe('dbCore: DB类生成SQL方法', function () {
     db.update({name: 1, age: 1})
     expect(db._sql).to.be.equal('UPDATE foo SET name = "1", age = "1" WHERE id = 3')
   })
+})
 
-  it('实例化后, 调用delete方法后, 如果没有table, 则抛出错误', function () {
+describe('dbCore: delete', function () {
+  it('如果没有table, 则抛出错误', function () {
     let db = new DB()
     function exec () {
       db.delete()
@@ -183,7 +215,14 @@ describe('dbCore: DB类生成SQL方法', function () {
     expect(exec).to.throw('没设置表名')
   })
 
-  it('实例化后, 调用delete方法时, 生成对应的SQL', function () {
+  it('返回的依然是本身', function () {
+    let db = new DB()
+    let foo = db.table('foo').delete()
+    expect(foo).to.be.equal(db)
+    expect(foo).to.be.instanceOf(DB)
+  })
+
+  it('生成对应的SQL', function () {
     let db = new DB()
     db.table('foo')
       .delete()
@@ -191,5 +230,98 @@ describe('dbCore: DB类生成SQL方法', function () {
     db.where('id = 1')
       .delete()
     expect(db._sql).to.be.equal('DELETE FROM foo WHERE id = 1')
+  })
+})
+
+describe('实战: CURD', function () {
+  let id
+  const getWhere = () => `id = ${id}`
+  it('添加数据', function (done) {
+    async function exec (cb) {
+      let db = new DB()
+      db.table('article')
+        .insert({
+          title: '标题',
+          content: '内容'
+        })
+      let {result} = await db.exec()
+      id = result.insertId
+      expect(result.affectedRows).to.be.equal(1)
+      done()
+    }
+    exec()
+  })
+
+  it('查询数据', function (done) {
+    async function exec (cb) {
+      let db = new DB()
+      db.table('article')
+        .where(getWhere())
+        .select()
+      let {result: [data]} = await db.exec()
+      expect(data.id).to.be.equal(id)
+      expect(data.title).to.be.equal('标题')
+      expect(data.content).to.be.equal('内容')
+      done()
+    }
+    exec()
+  })
+
+  it('修改数据', function (done) {
+    async function exec (cb) {
+      let db = new DB()
+      db.table('article')
+        .where(getWhere())
+        .update({
+          title: '修改后的标题',
+          content: '修改后的内容'
+        })
+      let {result} = await db.exec()
+      expect(result.affectedRows).to.be.equal(1)
+      expect(result.changedRows).to.be.equal(1)
+      done()
+    }
+    exec()
+  })
+
+  it('查询修改后的数据数据', function (done) {
+    async function exec (cb) {
+      let db = new DB()
+      db.table('article')
+        .where(getWhere())
+        .select()
+      let {result: [data]} = await db.exec()
+      expect(data.id).to.be.equal(id)
+      expect(data.title).to.be.equal('修改后的标题')
+      expect(data.content).to.be.equal('修改后的内容')
+      done()
+    }
+    exec()
+  })
+
+  it('删除数据', function (done) {
+    async function exec (cb) {
+      let db = new DB()
+      db.table('article')
+        .where(getWhere())
+        .delete()
+      let {result} = await db.exec()
+      expect(result.affectedRows).to.be.equal(1)
+      done()
+    }
+    exec()
+  })
+
+  it('查询删除后的数据数据', function (done) {
+    async function exec (cb) {
+      let db = new DB()
+      db.table('article')
+        .where(getWhere())
+        .select()
+      let {result} = await db.exec()
+      expect(result.length).to.be.equal(0)
+      done()
+    }
+    exec()
   })
 })

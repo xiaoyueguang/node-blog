@@ -83,6 +83,7 @@ class DB {
     })
 
     this._sql = `INSERT INTO ${this._table} ${keyString} values ${values.join(', ')}`
+    return this
   }
   /**
    * 生成查询语句
@@ -127,6 +128,7 @@ class DB {
   delete () {
     checkTable(this._table)
     this._sql = `DELETE FROM ${this._table}${this.generationWhere()}`
+    return this
   }
   /**
    * 执行
