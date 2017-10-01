@@ -5,7 +5,7 @@ exports.index = async (request, response, context) => {
 
   let {result} = await db.exec()
 
-  context.body = JSON.stringify(result)
+  context.body = context.view('home/index', result)
 }
 
 exports.detail = async (request, response, context) => {

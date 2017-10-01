@@ -47,6 +47,7 @@ function router (request, response, context) {
     if (params) {
       // 将抓取到的参数对象传入上下文
       context.params = params
+      context.status_code = 200
       await controller(request, response, context)
     }
   }

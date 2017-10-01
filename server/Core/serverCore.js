@@ -7,9 +7,9 @@ module.exports = function (
   const server = http.createServer(async (request, response) => {
     const context = {
       // 主体内容
-      body: '',
+      body: 'Not Find',
       // 状态
-      status_code: 200,
+      status_code: 404,
       // 头
       header: {
         // 内容类型
