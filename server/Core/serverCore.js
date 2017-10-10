@@ -7,7 +7,7 @@ module.exports = function (
   const server = http.createServer(async (request, response) => {
     const context = {
       // 主体内容
-      body: 'Not Find',
+      body: 'Not Found',
       // 状态
       status_code: 404,
       // 头
@@ -16,7 +16,8 @@ module.exports = function (
         'Content-Type': 'text/plain'
       },
       // 是否继续?
-      isNext: true
+      isNext: true,
+      isBinary: false
     }
 
     try {
@@ -25,7 +26,9 @@ module.exports = function (
       fail(e)
     }
     response.writeHead(context.status_code, context.header)
-    response.write(context.body + '')
+    const writeObject = [context.body]
+    context.isBinary && writeObject.push('binary')
+    response.write(context.body + '', context.isBinary ? 'binary' : '')
     response.end()
   }).listen(port)
 
