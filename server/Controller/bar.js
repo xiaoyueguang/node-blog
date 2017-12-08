@@ -1,3 +1,3 @@
-module.exports = (request, response, context) => {
+module.exports = context => {
   context.body = 'Hello Bar!'
 }

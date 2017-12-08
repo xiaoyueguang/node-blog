@@ -239,7 +239,7 @@ describe('实战: CURD', function () {
   it('添加数据', function (done) {
     async function exec (cb) {
       let db = new DB()
-      db.table('article')
+      db.table('blog_articles')
         .insert({
           title: '标题',
           content: '内容'
@@ -255,7 +255,7 @@ describe('实战: CURD', function () {
   it('查询数据', function (done) {
     async function exec (cb) {
       let db = new DB()
-      db.table('article')
+      db.table('blog_articles')
         .where(getWhere())
         .select()
       let {result: [data]} = await db.exec()
@@ -270,7 +270,7 @@ describe('实战: CURD', function () {
   it('修改数据', function (done) {
     async function exec (cb) {
       let db = new DB()
-      db.table('article')
+      db.table('blog_articles')
         .where(getWhere())
         .update({
           title: '修改后的标题',
@@ -287,7 +287,7 @@ describe('实战: CURD', function () {
   it('查询修改后的数据数据', function (done) {
     async function exec (cb) {
       let db = new DB()
-      db.table('article')
+      db.table('blog_articles')
         .where(getWhere())
         .select()
       let {result: [data]} = await db.exec()
@@ -302,7 +302,7 @@ describe('实战: CURD', function () {
   it('删除数据', function (done) {
     async function exec (cb) {
       let db = new DB()
-      db.table('article')
+      db.table('blog_articles')
         .where(getWhere())
         .delete()
       let {result} = await db.exec()
@@ -315,7 +315,7 @@ describe('实战: CURD', function () {
   it('查询删除后的数据数据', function (done) {
     async function exec (cb) {
       let db = new DB()
-      db.table('article')
+      db.table('blog_articles')
         .where(getWhere())
         .select()
       let {result} = await db.exec()

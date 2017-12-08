@@ -1,0 +1,5 @@
+mixin list(item)
+  a(href = '/detail/' + item.id)
+    .home__list--wrap
+      h3.home__list--title= item.title
+      .home__list--content= item.content

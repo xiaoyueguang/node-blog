@@ -4,13 +4,13 @@ const DBMiddle = require('./Core/dbCore')
 const templateMiddle = require('./Core/templateCore')
 const staticMiddle = require('./Core/staticCore')
 
-Server(async function (request, response, context) {
-  await staticMiddle(request, response, context)
+Server(async function (context) {
+  await staticMiddle(context)
   await context.static('/public', './public')
 
-  await templateMiddle(request, response, context)
-  await DBMiddle(request, response, context)
-  await routerMiddle(request, response, context)
+  await templateMiddle(context)
+  await DBMiddle(context)
+  await routerMiddle(context)
 }, function (e) {
   console.log(e)
 }, 3000)

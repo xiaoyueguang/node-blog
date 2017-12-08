@@ -1,7 +1,7 @@
 const pug = require('pug')
 const {VIEW_PATH} = require('../conf')
 
-module.exports = exports = async (request, response, context) => {
+module.exports = exports = async (context) => {
   if (!context.isNext) return false
   context.header['Content-Type'] = 'text/html'
   context.view = exports.view

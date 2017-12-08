@@ -5,16 +5,17 @@ const queue = []
 const port = exports.port = parseInt(Math.random() * 1000, 10) + 9000
 axios.default.baseURL = `http://localhost:${port}`
 
-serverCore(async function (request, response, context) {
+serverCore(async function (context) {
   let i = 0
   while (i < queue.length) {
-    await queue[i](request, response, context)
+    await queue[i](context)
     i++
   }
 }, e => {}, port)
 
 // 添加方法
 exports.add = fn => {
+  console.log(port)
   queue.push(fn)
 }
 // 删除方法

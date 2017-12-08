@@ -1,0 +1,144 @@
+:root {
+  --main: #0092c7;
+  --back: #9fe0f6;
+  --middle: #f3e59a;
+  --warn: #f29c9c;
+  --emp: #f3b59b;
+  --wrap: 1200px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin: auto;
+}
+
+ul, li, ol {
+  list-style: none;
+}
+
+.header {
+  width: 100%;
+  height: 56px;
+  background: var(--main);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  color: #fff;
+  /* box-shadow: 0 0px 12px 4px var(--main); */
+}
+
+.header__placeholder {
+  height: 56px;
+}
+
+.header__wrap {
+  width: var(--wrap);
+  height: 100%;
+  margin: auto;
+  display: flex;
+}
+
+.header__logo {
+  background: var(--emp);
+  width: 128px;
+  height: 100%;
+}
+
+.header__back {
+  background: var(--back);
+  width: 100%;
+  height: 512px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.header__menu {
+  line-height: 56px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.header__menu li {
+  display: inline-block;
+  width: 96px;
+  height: 100%;
+  transition: all .4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.header__menu li:after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 100%;
+  background: var(--back);
+  transition: transform .2s;
+  transform: translateY(0);
+  z-index: 0;
+}
+
+.header__menu span {
+  position: relative;
+  z-index: 1;
+}
+
+.header__menu li:hover:after, .header__menu .header__menu--active:after {
+  transform: translateY(-100%);
+}
+
+.home__lists {
+  padding: 12px;
+  width: calc(100% - 12px * 2);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 16px;
+  min-height: 100%;
+}
+
+
+@media (max-width: 960px){
+  .home__lists {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .home__lists {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+
+
+
+.home__list--wrap {
+  background: #fff;
+  box-shadow: 0 0 4px 0 var(--main);
+  transition: box-shadow .4s;
+  padding: 12px;
+  height: 128px;
+}
+
+.home__list--wrap:hover {
+  box-shadow: 0 0 12px 0 var(--main);
+}
+
+.home__list--content {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}

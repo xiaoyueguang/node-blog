@@ -17,11 +17,13 @@ module.exports = function (
       },
       // 是否继续?
       isNext: true,
-      isBinary: false
+      isBinary: false,
+      request,
+      response
     }
 
     try {
-      await success(request, response, context)
+      await success(context)
     } catch (e) {
       fail(e)
     }

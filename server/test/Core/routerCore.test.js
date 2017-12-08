@@ -97,10 +97,10 @@ describe('routerCore: 业务方法', function () {
 })
 
 async function ajaxHelp (method, done) {
-  const fn = (request, response, context) => {
-    const Router = router(request, response, context)
+  const fn = context => {
+    const Router = router(context)
 
-    Router[method]('/foo', (request, response, context) => {
+    Router[method]('/foo', context => {
       context.body = text
     })
   }

@@ -26,18 +26,18 @@ function readFile (path) {
   })
 }
 
-module.exports = exports = async (request, response, context) => {
+module.exports = exports = async context => {
   context.static = async function (url, path, response) {
-    let matchURL = request.url.substr(0, url.length + 1)
+    let matchURL = context.request.url.substr(0, url.length + 1)
     // 匹配到的时候就才读取
     if (url + '/' === matchURL) {
       let text
       try {
-        text = await readFile(request.url)
+        text = await readFile(context.request.url)
         context.status_code = 200
-        const type = getType(getSuffix(request.url))
+        const type = getType(getSuffix(context.request.url))
         context.header['Content-Type'] = type
-        const time = new Date().getTime()
+        // const time = new Date().getTime()
         if (type.indexOf('image') > -1) {
         }
         context.isBinary = true

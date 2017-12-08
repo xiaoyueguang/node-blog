@@ -36,26 +36,26 @@ const removeLastSlash = exports.removeLastSlash = str => str === '/' ? str : str
  */
 const getQuesIndex = exports.getQuesIndex = url => url.indexOf('?')
 
-function router (request, response, context) {
+function router (context) {
   /**
    * 给路径指定控制器方法
    * @param {string} path 路径
    * @param {methods} controller 控制器方法
    */
   const define = async (path, controller) => {
-    const params = matchParams(path, matchParamsPath(request.url))
+    const params = matchParams(path, matchParamsPath(context.request.url))
     if (params) {
       // 将抓取到的参数对象传入上下文
       context.params = params
       context.status_code = 200
-      await controller(request, response, context)
+      await controller(context)
     }
   }
 
   const METHODS = {}
   methods.forEach(key => {
     METHODS[key.toLowerCase()] = async (path, controller) => {
-      request.method === key && await define(path, controller)
+      context.request.method === key && await define(path, controller)
     }
   })
   return Object.assign({}, METHODS, {any: define})

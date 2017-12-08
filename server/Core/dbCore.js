@@ -167,7 +167,7 @@ class DB {
  * @param {context} context
  * @return
  */
-async function DBMiddle (request, response, context) {
+async function DBMiddle (context) {
   context.DB = DB
 }
 /**

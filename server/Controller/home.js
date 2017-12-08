@@ -1,26 +1,25 @@
-exports.index = async (request, response, context) => {
+exports.index = async context => {
   let db = new context.DB()
-  db.table('article')
+  db.table('blog_articles')
     .select('*')
 
   let {result} = await db.exec()
 
-  context.body = context.view('home/index', result)
+  context.body = context.view('home/index', {items: result})
 }
 
-exports.detail = async (request, response, context) => {
+exports.detail = async context => {
   let db = new context.DB()
-  db.table('article')
-    // 
+  db.table('blog_articles')
     .where(`id = ${context.params.id}`)
     .select('*')
   let {result} = await db.exec()
   context.body = JSON.stringify(result)
 }
 
-exports.create = async (request, response, context) => {
+exports.create = async context => {
   let db = new context.DB()
-  db.table('article')
+  db.table('blog_articles')
     .insert({
       title: '添加的标题',
       content: '添加的内容'
@@ -29,9 +28,9 @@ exports.create = async (request, response, context) => {
   context.body = JSON.stringify(result)
 }
 
-exports.update = async (request, response, context) => {
+exports.update = async context => {
   let db = new context.DB()
-  db.table('article')
+  db.table('blog_articles')
     .where(`id = ${context.params.id}`)
     .update({
       title: '修改的标题',
@@ -41,11 +40,15 @@ exports.update = async (request, response, context) => {
   context.body = JSON.stringify(result)
 }
 
-exports.delete = async (request, response, context) => {
+exports.delete = async context => {
   let db = new context.DB()
-  db.table('article')
+  db.table('blog_articles')
     .where(`id = ${context.params.id}`)
     .delete()
   let {result} = await db.exec()
   context.body = JSON.stringify(result)
+}
+
+exports.chenlin = async context => {
+  context.body = JSON.stringify('HELLO CHENLIN!')
 }

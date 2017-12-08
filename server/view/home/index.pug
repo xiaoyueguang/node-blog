@@ -1,3 +1,7 @@
-script(src="./public/index.js")
+extends ../components/layout.pug
 
-img(src="./public/index.png")
+block content
+  include ../components/list.pug
+  .home__lists.wrap
+    each item in items
+      +list(item)
